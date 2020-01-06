@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Print env variable') {
             steps {
-                echo "ENV Var is ${env.RemoteTrigger}"
+                echo "ENV Var is ${env}"
             }
         }
     }
