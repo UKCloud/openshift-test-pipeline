@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Print env variable') {
+        stage('Check environment variable') {
+            // Checks the environment variable 'RemoteTrigger'.
             steps {
                 echo sh(returnStdout: true, script: 'env')
-                echo "ENV Var is ${env}"
+                echo "ENV Var is ${env.RemoteTrigger}"
             }
         }
     }
