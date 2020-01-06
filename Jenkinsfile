@@ -1,7 +1,11 @@
 pipeline {
-    node {
+    agent any
+
+    stages {
         stage('Print env variable') {
-            echo "ENV Var is ${RemoteTrigger}"
+            steps {
+                echo "ENV Var is ${RemoteTrigger}"
+            }
         }
     }
 }
