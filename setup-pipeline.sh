@@ -32,4 +32,5 @@ oc new-app -f jenkins-pipelines/test-pipeline.yaml -p SECRET=$BASE64STRING
 
 # Once created, describe object telling the user how to kick off a pipeline.
 oc describe bc/openshift-test-pipeline
-echo "Use the Webhook Generic URL above to kick off the pipeline."
+echo "Use the Webhook Generic URL above to kick off the pipeline.\n Using this method requires you to make the request manually."
+echo "You can also use ./run-pipeline.sh to automate this process."
