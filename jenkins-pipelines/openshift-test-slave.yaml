@@ -53,6 +53,36 @@ objects:
           kind: ImageStreamTag
           name: jenkins-slave-base-rhel7:latest
       type: Docker
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      build: ${NAME}-pipeline
+    name: ${NAME}-pipeline
+  spec:
+    nodeSelector: null
+    output: {}
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: ${PIPELINE_CONTEXT_DIR}
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+      type: Git
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: Jenkinsfile
+      type: JenkinsPipeline
+    triggers:
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: jenkins-slave-base-rhel7:latest 
+    - type: ConfigChange
 parameters:
 - description: The name assigned to the objects defined in this template.
   displayName: Name
