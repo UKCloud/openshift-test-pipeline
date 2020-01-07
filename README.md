@@ -13,7 +13,7 @@ A pipeline for running tests against an OpenShift cluster.
 
     * Execute `./setup-pipeline.sh`
 
-2. Once the `openshift-test-pipeline-slave-pipeline` has completed all builds, run the pipeline:
+2. Once the `openshift-test-pipeline-slave-pipeline` has completed all builds, run the test pipeline:
 
     * `chmod +x setup-pipeline.sh`
 
