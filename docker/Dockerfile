@@ -5,7 +5,8 @@ USER root
 RUN yum-config-manager --enable rhel-7-server-rpms > /dev/null --enable rhel-7-server-extras-rpms > /dev/null
 
 # Install ansible and prerequisites.
-RUN yum install python-devel gcc ansible wget glibc epel-release jq -y
+RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
+RUN yum install python-devel gcc ansible wget glibc jq -y
 
 # Install OC client.
 RUN wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz \
