@@ -5,7 +5,7 @@ NAME="openshift-test-pipeline-slave"
 SOURCE_REPOSITORY_URL="https://github.com/UKCloud/openshift-test-pipeline.git"
 SOURCE_REPOSITORY_REF="dev"
 CONTEXT_DIR="docker"
-PROJECT="openshift-test-pipeline"
+PROJECT="test-pipeline"
 
 # Setup pipeline project in OpenShift.
 oc new-project $PROJECT
