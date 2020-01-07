@@ -23,10 +23,13 @@ oc new-app -f jenkins-pipelines/openshift-test-slave.yaml \
     -p SOURCE_REPOSITORY_REF=$SOURCE_REPOSITORY_REF \
     -p CONTEXT_DIR=$CONTEXT_DIR
 
+# Start openshift-test-pipeline-slave build.
+oc start-build openshift-test-pipeline-slave
+
 # Create Base64 string to use as pipeline generic webhook secret.
 BASE64STRING=$(echo \$RANDOM | base64)
 # Deploy buildconfig for test pipeline. Creates generic webhook.
-oc create -f jenkins-pipelines/test-pipeline.yaml -p SECRET=$BASE64STRING
+oc new-app -f jenkins-pipelines/test-pipeline.yaml -p SECRET=$BASE64STRING
 
 # Once created, describe object telling the user how to kick off a pipeline.
 oc describe bc/openshift-test-pipeline
