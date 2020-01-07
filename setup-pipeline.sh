@@ -25,9 +25,6 @@ oc new-app -f jenkins-pipelines/openshift-test-slave.yaml \
     -p CONTEXT_DIR=$CONTEXT_DIR \
     -p PIPELINE_CONTEXT_DIR=$PIPELINE_CONTEXT_DIR
 
-# Start openshift-test-pipeline-slave build.
-oc start-build openshift-test-pipeline-slave --follow=true
-
 # Create Base64 string to use as pipeline generic webhook secret.
 BASE64STRING=$(echo \$RANDOM | base64)
 # Deploy buildconfig for test pipeline. Creates generic webhook.
