@@ -5,6 +5,7 @@ NAME="openshift-test-pipeline-slave"
 SOURCE_REPOSITORY_URL="https://github.com/UKCloud/openshift-test-pipeline.git"
 SOURCE_REPOSITORY_REF="dev"
 CONTEXT_DIR="docker"
+PIPELINE_CONTEXT_DIR="jenkins-pipelines"
 PROJECT="test-pipeline"
 
 # Setup pipeline project in OpenShift.
@@ -21,7 +22,8 @@ oc new-app -f jenkins-pipelines/openshift-test-slave.yaml \
     -p NAME=$NAME \
     -p SOURCE_REPOSITORY_URL=$SOURCE_REPOSITORY_URL \
     -p SOURCE_REPOSITORY_REF=$SOURCE_REPOSITORY_REF \
-    -p CONTEXT_DIR=$CONTEXT_DIR
+    -p CONTEXT_DIR=$CONTEXT_DIR \
+    -p PIPELINE_CONTEXT_DIR=$PIPELINE_CONTEXT_DIR
 
 # Start openshift-test-pipeline-slave build.
 oc start-build openshift-test-pipeline-slave --follow=true
