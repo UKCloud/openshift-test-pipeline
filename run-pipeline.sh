@@ -7,7 +7,7 @@ SECRET=$(oc get secret openshift -o json)
 # Provide environment variables.
 ENV_VARS='env:
 - name: "Credentials"
-    value: ${SECRET}'
+  value: ${SECRET}'
 
 # Find '<secret>'' in url and replace with $BASE64STRING.
 WEBHOOK_URL="${WEBHOOK_URL/<secret>/$BASE64STRING}"
