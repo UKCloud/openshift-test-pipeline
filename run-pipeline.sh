@@ -1,5 +1,7 @@
 read -p "Provide generic webhook URL (from above): " WEBHOOK_URL
 
+read -p "Provide base64 encoded string (from above): " BASE64STRING
+
 # Obtain OpenShift secret to pass in through webhook.
 SECRET=$(oc get secret openshift -o json)
 
