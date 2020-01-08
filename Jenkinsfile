@@ -10,8 +10,8 @@ node ("openshift-test-pipeline-slave") {
             else {
                 def Creds = "${env.Credentials}"
                 sh("printenv")
-                sh("\$Credentials | jq .data.username")
-                sh("$Credentials | jq .data.username")
+                sh("echo \$Credentials | jq .data.username")
+                sh("echo $Credentials | jq .data.username")
 
                 // Setup credential envrionment variables.
                 environment {
