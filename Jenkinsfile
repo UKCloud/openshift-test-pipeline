@@ -8,21 +8,16 @@ node ("openshift-test-pipeline-slave") {
                 throw new Exception("Credentials environment variable was empty.")
             }
             else {
-                def Creds = "${env.Credentials}"
-                sh("printenv")
-                sh("echo \$Credentials | jq .data.username")
-                sh("echo $Credentials | jq .data.username")
-
                 // Setup credential envrionment variables.
                 environment {
-                    OPENSHIFT_USERNAME = sh("""echo ${env.Credentials} | jq ".['data']['username']" | base64 --decode""")
-                    OPENSHIFT_PASSWORD = sh("""echo ${env.Credentials} | jq ".['data']['userpass']" | base64 --decode""")
-                    ADMIN_USERNAME = sh("""echo ${env.Credentials} | jq ".['data']['adminuser']" | base64 --decode""")
-                    ADMIN_PASSWORD = sh("""echo ${env.Credentials} | jq ".['data']['adminpass']" | base64 --decode""")
-                    BASTION_IP = sh("""echo ${env.Credentials} | jq ".['data']['bastionip']" | base64 --decode""")
-                    DOMAIN_SUFFIX = sh("""echo ${env.Credentials} | jq ".['data']['domainsuffix']" | base64 --decode""")
-                    MULTINETWORK = sh("""echo ${env.Credentials} | jq ".['data']['multinetwork']" | base64 --decode""")
-                    SSH_KEY = sh("""echo ${env.Credentials} | jq ".['data']['sshkey']" | base64 --decode""")
+                    OPENSHIFT_USERNAME = sh("echo \$Credentials | jq .data.username | base64 --decode")
+                    OPENSHIFT_PASSWORD = sh("echo \$Credentials | jq .data.userpass | base64 --decode")
+                    ADMIN_USERNAME = sh("echo \$Credentials | jq .data.adminuser | base64 --decode")
+                    ADMIN_PASSWORD = sh("echo \$Credentials | jq .data.adminpass | base64 --decode")
+                    BASTION_IP = sh("echo \$Credentials | jq .data.bastionip | base64 --decode")
+                    DOMAIN_SUFFIX = sh("echo \$Credentials | jq .data.domainsuffix | base64 --decode")
+                    MULTINETWORK = sh("echo \$Credentials | jq .data.multinetwork | base64 --decode")
+                    SSH_KEY = sh("echo \$Credentials | jq .data.sshkey | base64 --decode")
                 }
             }
         }
