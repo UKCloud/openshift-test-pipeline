@@ -1,3 +1,5 @@
+#!/bin/bash
+
 read -p "Provide generic webhook URL (from above): " WEBHOOK_URL
 
 read -p "Provide base64 encoded string (from above): " BASE64STRING
