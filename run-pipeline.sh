@@ -6,8 +6,6 @@ SECRET=$(oc get secret openshift -o json)
 # Trigger pipeline build via webhook.
 # Provide environment variables.
 ENV_VARS='env:
-- name: "RemoteTrigger"
-    value: "False"
 - name: "Credentials"
     value: ${SECRET}'
 
