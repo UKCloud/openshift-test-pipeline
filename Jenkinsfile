@@ -7,6 +7,7 @@ pipeline {
             steps {
                 echo sh(returnStdout: true, script: 'env')
                 echo "ENV Var is ${env.RemoteTrigger}"
+                sh("This is shell: ${env.RemoteTrigger}")
             }
         }
     }
