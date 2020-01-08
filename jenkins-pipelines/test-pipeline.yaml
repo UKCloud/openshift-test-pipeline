@@ -18,8 +18,6 @@ objects:
     strategy:
       jenkinsPipelineStrategy:
         env:
-        - name: "RemoteTrigger"
-          value: "False"
         - name: "Credentials"
           value: ""
         jenkinsfilePath: "Jenkinsfile"
