@@ -10,8 +10,8 @@ SECRET=$(oc get secret openshift -o json)
 # Trigger pipeline build via webhook.
 # Provide environment variables.
 ENV_VARS="env:
-- name: 'Credentials'
-  value: $SECRET"
+   - name: 'Credentials'
+     value: $SECRET"
 
 # Find '<secret>'' in url and replace with $BASE64STRING.
 WEBHOOK_URL="${WEBHOOK_URL/<secret>/$BASE64STRING}"
