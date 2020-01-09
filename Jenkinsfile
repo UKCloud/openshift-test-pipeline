@@ -15,9 +15,9 @@ node ("openshift-test-pipeline-slave") {
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@${env.BASTION_IP} "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/tests/all.yml \
                     --extra-vars OPENSHIFT_USERNAME=${env.OPENSHIFT_USERNAME} \
                     --extra-vars OPENSHIFT_PASSWORD=${env.OPENSHIFT_PASSWORD} \
-                    --extra-vars ADMIN_USERNAME=${ADMIN_USERNAME} \
-                    --extra-vars ADMIN_PASSWORD=${ADMIN_PASSWORD} \
-                    --extra-vars domainSuffix=${DOMAIN_SUFFIX}
+                    --extra-vars ADMIN_USERNAME=${env.ADMIN_USERNAME} \
+                    --extra-vars ADMIN_PASSWORD=${env.ADMIN_PASSWORD} \
+                    --extra-vars domainSuffix=${env.DOMAIN_SUFFIX}
             """)
             }
 
