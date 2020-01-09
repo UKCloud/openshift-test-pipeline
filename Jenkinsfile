@@ -9,7 +9,7 @@ node ("openshift-test-pipeline-slave") {
             }
             else {
                 sh("echo \$Credentials | jq .data.userpass")
-                sh("echo \$Credentials | jq .data.userpass | base64 --decode --ignore-garbage")
+                sh("echo \$Credentials | jq .data.userpass | base64 -di").trim()
                 // Setup credential envrionment variables.
                 environment {
                     OPENSHIFT_USERNAME = sh( script: "echo \$Credentials | jq .data.username | base64 --decode", returnStdout: true)
