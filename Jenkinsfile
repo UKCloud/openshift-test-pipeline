@@ -7,8 +7,8 @@ node ("openshift-test-pipeline-slave") {
             sh("""
                 oc get secret openshift -o jsonpath={.data.sshkey} | base64 -d | tee ssh_key
                 chmod 600 ssh_key
-                sleep 10000
             """)
+            sh("sleep 10000")
         }
 
         stage ("Validate OpenShift deployment") {
