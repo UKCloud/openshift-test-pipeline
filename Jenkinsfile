@@ -8,7 +8,8 @@ node ("openshift-test-pipeline-slave") {
                 throw new Exception("Credentials environment variable was empty.")
             }
             else {
-                sh("export OPENSHIFT_USERNAME=\$(echo \$Credentials | jq .data.username | base64 --decode)")
+                sh("echo \$Credentials | jq .data.userpass")
+                sh("echo \$Credentials | jq .data.userpass | base64 --decode")
                 // Setup credential envrionment variables.
                 environment {
                     OPENSHIFT_USERNAME = sh( script: "echo \$Credentials | jq .data.username | base64 --decode", returnStdout: true)
