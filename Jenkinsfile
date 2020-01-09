@@ -23,6 +23,8 @@ node ("openshift-test-pipeline-slave") {
         }
 
         stage("Create SSH key") {
+            echo "${OPENSHIFT_USERNAME}"
+            echo "${BASTION_IP}"
             sh("echo \$OPENSHIFT_USERNAME")
             sh("echo \$BASTION_IP")
             sh("echo \$MULTINETWORK")
