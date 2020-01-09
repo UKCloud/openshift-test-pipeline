@@ -13,11 +13,11 @@ node ("openshift-test-pipeline-slave") {
         stage ("Validate OpenShift deployment") {
             sh("""
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/tests/all.yml \
-                    --extra-vars OPENSHIFT_USERNAME=\$Username \
-                    --extra-vars OPENSHIFT_PASSWORD=\$Userpass \
-                    --extra-vars ADMIN_USERNAME=\$Adminuser \
-                    --extra-vars ADMIN_PASSWORD=\$Adminpass \
-                    --extra-vars domainSuffix=\$Domainsuffix
+                    --extra-vars OPENSHIFT_USERNAME=\"\$Username\" \
+                    --extra-vars OPENSHIFT_PASSWORD=\"\$Userpass\" \
+                    --extra-vars ADMIN_USERNAME=\"\$Adminuser\" \
+                    --extra-vars ADMIN_PASSWORD=\"\$Adminpass\" \
+                    --extra-vars domainSuffix=\"\$Domainsuffix\"
             """)
             }
 
