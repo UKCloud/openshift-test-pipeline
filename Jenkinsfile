@@ -4,9 +4,13 @@ node ("openshift-test-pipeline-slave") {
 
         stage("Create SSH key") {
             sh("""
-                oc get secrets openshift --template='{{ .data.sshkey }}' | base64 --decode | tee -a ssh_key
+                echo \$Sshkey | base64 -d | tee -a ssh_key
                 chmod 600 ssh_key
             """)
+            //sh("""
+            //    oc get secrets openshift --template='{{ .data.sshkey }}' | base64 --decode | tee -a ssh_key
+            //    chmod 600 ssh_key
+            //""")
         }
 
         stage ("Validate OpenShift deployment") {
