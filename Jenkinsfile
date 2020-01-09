@@ -17,7 +17,7 @@ node ("openshift-test-pipeline-slave") {
                     --extra-vars OPENSHIFT_PASSWORD=\"\$Userpass\" \
                     --extra-vars ADMIN_USERNAME=\"\$Adminuser\" \
                     --extra-vars ADMIN_PASSWORD=\"\$Adminpass\" \
-                    --extra-vars domainSuffix=\"\$Domainsuffix\"
+                    --extra-vars domainSuffix=\"\$Domainsuffix\""
             """)
             }
 
