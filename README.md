@@ -7,22 +7,10 @@ A pipeline for running tests against an OpenShift cluster.
 
 ## Usage
 
-1. Run the setup script:
+1. Run the setup script using the following command: `chmod +x setup-pipeline.sh && setup-pipeline.sh`
 
-    * `chmod +x setup-pipeline.sh`
+2. Provide the required secrets in `jenkins-pipelines/secret.yaml`:
 
-    * Execute `setup-pipeline.sh`
+    * Create the secret in the project using the following command: `oc create -f jenkins-pipelines/secret.yaml`
 
-2. Once the `openshift-test-pipeline-slave-pipeline` has completed all builds, run the test pipeline:
-
-    **NOTE:**
-
-    * If running manually, ensure you have an OpenShift secret named **openshift**
-
-        * If not, base64 encode all your secrets and provide them in `jenkins-pipelines/secret.yaml`
-
-        * To create the secret, execute the command: `oc create -f jenkins-pipelines/secret.yaml`
-
-    * `chmod +x setup-pipeline.sh`
-
-    * Execute the command: `run-pipeline.sh`
+3. Run the test pipeline using the following command: `chmod +x run-pipeline.sh && run-pipeline.sh`
