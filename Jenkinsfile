@@ -5,7 +5,7 @@ node ("openshift-test-pipeline-slave") {
         stage("Create SSH key") {
             sh("printenv")
             sh("""
-                oc get secret openshift -o jsonpath={.data.sshkey} | base64 -d | tee -a ssh_key
+                oc get secret openshift -o jsonpath={.data.sshkey} | base64 -d | tee ssh_key
                 chmod 600 ssh_key
             """)
         }
