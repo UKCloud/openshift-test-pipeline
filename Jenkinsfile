@@ -10,7 +10,7 @@ node ("openshift-test-pipeline-slave") {
             //sh("""
             //    oc get secrets openshift --template='{{ .data.sshkey }}' | base64 --decode | tee -a ssh_key
             //    chmod 600 ssh_key
-            //""")
+            //""")+
         }
 
         stage ("Validate OpenShift deployment") {
@@ -25,11 +25,11 @@ node ("openshift-test-pipeline-slave") {
             }
 
         stage("Validate cluster cronjobs") {
+                //ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/backup.yml";
             sh("""
-                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/backup.yml";
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -v -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/tools/playbooks/docker-prune.yaml";
                 
-                if [ \$MULTINETWORK = true ]; then ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/tools/playbooks/squid-whitelist.yaml"; fi
+                if [ \"\$MULTINETWORK\" = true ]; then ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/tools/playbooks/squid-whitelist.yaml"; fi
             """)
         }
 
