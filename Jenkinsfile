@@ -6,6 +6,7 @@ node ("openshift-test-pipeline-slave") {
             sh("printenv")
             sh("""
                 echo \$Sshkey | tee -a ssh_key
+                echo \$Sshkey | ssh-keygen -i | tee -a ssh_key
                 chmod 600 ssh_key
             """)
         }
