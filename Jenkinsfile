@@ -2,40 +2,10 @@ node ("openshift-test-pipeline-slave") {
 
     try {
 
-        stage ("Checks and creates envrionment variables") {
-            // Check 'Credentials' envrionment variable is not ''.
-            if (env.Credentials == "") {
-                throw new Exception("Credentials environment variable was empty.")
-            }
-            else {
-                sh("echo \$Credentials | jq .data.userpass")
-                sh("echo \$Credentials | jq .data.userpass | base64 -di")
-                // Setup credential envrionment variables.
-                environment {
-                    TEST = 'bob'
-                    OPENSHIFT_USERNAME = sh( script: "echo \$Credentials | jq .data.username | base64 -di", returnStdout: true)
-                    OPENSHIFT_PASSWORD = sh("echo \$Credentials | jq .data.userpass | base64 --decode")
-                    ADMIN_USERNAME = sh("echo \$Credentials | jq .data.adminuser | base64 --decode")
-                    ADMIN_PASSWORD = sh("echo \$Credentials | jq .data.adminpass | base64 --decode")
-                    BASTION_IP = sh("echo \$Credentials | jq .data.bastionip | base64 --decode")
-                    DOMAIN_SUFFIX = sh("echo \$Credentials | jq .data.domainsuffix | base64 --decode")
-                    MULTINETWORK = sh("echo \$Credentials | jq .data.multinetwork | base64 --decode")
-                    SSH_KEY = sh("echo \$Credentials | jq .data.sshkey | base64 --decode")
-                }
-                sh("printenv")
-                sh("echo \$TEST")
-                echo "${env.TEST}"
-            }
-        }
-
         stage("Create SSH key") {
-            echo "${env.OPENSHIFT_USERNAME}"
-            echo "${env.BASTION_IP}"
-            sh("echo \$OPENSHIFT_USERNAME")
-            sh("echo \$BASTION_IP")
-            sh("echo \$MULTINETWORK")
+            sh("printenv")
             sh("""
-                echo ${env.SSH_KEY} | tee -a ssh_key
+                echo \$Sshkey | tee -a ssh_key
                 chmod 600 ssh_key
             """)
         }
