@@ -18,7 +18,21 @@ objects:
     strategy:
       jenkinsPipelineStrategy:
         env:
-        - name: "Credentials"
+        - name: "Username"
+          value: ""
+        - name: "Userpass"
+          value: ""
+        - name: "Adminuser"
+          value: ""
+        - name: "Adminpass"
+          value: ""
+        - name: "Bastionip"
+          value: ""
+        - name: "Domainsuffix"
+          value: ""
+        - name: "Multinetwork"
+          value: ""
+        - name: "Sshkey"
           value: ""
         jenkinsfilePath: "Jenkinsfile"
     triggers:
