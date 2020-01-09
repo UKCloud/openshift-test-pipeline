@@ -9,10 +9,11 @@ node ("openshift-test-pipeline-slave") {
             }
             else {
                 sh("echo \$Credentials | jq .data.userpass")
-                sh("echo \$Credentials | jq .data.userpass | base64 -di").trim()
+                sh("echo \$Credentials | jq .data.userpass | base64 -di")
                 // Setup credential envrionment variables.
                 environment {
-                    OPENSHIFT_USERNAME = sh( script: "echo \$Credentials | jq .data.username | base64 --decode", returnStdout: true)
+                    TEST = 'bob'
+                    OPENSHIFT_USERNAME = sh( script: "echo \$Credentials | jq .data.username | base64 -di", returnStdout: true)
                     OPENSHIFT_PASSWORD = sh("echo \$Credentials | jq .data.userpass | base64 --decode")
                     ADMIN_USERNAME = sh("echo \$Credentials | jq .data.adminuser | base64 --decode")
                     ADMIN_PASSWORD = sh("echo \$Credentials | jq .data.adminpass | base64 --decode")
@@ -21,6 +22,9 @@ node ("openshift-test-pipeline-slave") {
                     MULTINETWORK = sh("echo \$Credentials | jq .data.multinetwork | base64 --decode")
                     SSH_KEY = sh("echo \$Credentials | jq .data.sshkey | base64 --decode")
                 }
+                sh("printenv")
+                sh("echo \$TEST")
+                echo "${env.TEST}"
             }
         }
 
