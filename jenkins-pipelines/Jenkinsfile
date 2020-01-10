@@ -10,7 +10,6 @@ node ("openshift-test-pipeline-slave") {
     stage("test tools") {
         sh("ansible-playbook --version")
         sh("oc version")
-        sh("jq --version")
     }
 }
 
