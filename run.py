@@ -2,6 +2,9 @@ try:
     from requests import post
     from base64 import b64decode
     from yaml import safe_load, safe_dump
+    from kubernetes import client, config
+    from openshift.dynamic import DynamicClient
+    from subprocess import call
     import fire
 
     # Imports for error handling.
@@ -9,6 +12,32 @@ try:
     import binascii
 except ImportError as err:
     raise ImportError(f"Failed to import required modules: {err}")
+
+
+def create_project(dyn_client: DynamicClient, project: str):
+    """
+    Use the Kubernetes DynamicClient to create a new project in OpenShift.
+    :param dyn_client: The kubernetes DynamicClient class. Used for authentication.
+    :param project: The name of the project to create in OpenShift.
+    """
+    # Get the resource.
+    v1_projects = dyn_client.resources.get(
+        api_version="project.openshift.io/v1", kind="Project"
+    )
+    project_yaml = f"""
+    apiVersion: project.openshift.io/v1
+    kind: Project
+    metadata:
+      name: {project}
+    spec:
+      finalizers:
+      - kubernetes
+    """
+    # Load project YAML.
+    project_yaml = safe_load(project_yaml)
+    # Create the new project.
+    project = v1_projects.create(body=project_yaml)
+    print(f"OpenShift project: {project} created successfully.")
 
 
 def setup_pipeline(
@@ -28,7 +57,15 @@ def setup_pipeline(
     :param pipeline_context_dir: The directory containing pipeline files.
     :param project: The project name to create in OpenShift.
     """
-    pass
+    # Create a new Kubernetes client from configuration and client to interact with API.
+    k8s_client = config.new_client_from_config()
+    dyn_client = DynamicClient(k8s_client)
+
+    # Create OpenShift project.
+    create_project(dyn_client=dyn_client, project=project)
+
+    # Create persistent Jenkins in OpenShift.
+    call(["oc", "create", "jenkins-persistent", "-p", "VOLUME_CAPACITY=50Gi"])
 
 
 def load_credentials(credentials_path: str):
