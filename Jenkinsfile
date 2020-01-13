@@ -20,6 +20,16 @@ node ("openshift-test-pipeline-slave") {
             """)
             }
 
+        /*
+            Load tests for cluster using Locust.
+        */
+        stage('OpenShift load testing') {
+            sh("""
+                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip \
+                    "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /home/cloud-user/openshift-tooling/locust/locust_setup.yaml --extra-vars domainSuffix=\"\$Domainsuffix\""
+            """)
+        }
+
         stage("Validate cluster cronjobs") {
             sh("""
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /usr/share/ansible/openshift-deployment-ansible/backup.yml";
@@ -35,10 +45,8 @@ node ("openshift-test-pipeline-slave") {
         stage("Validate OpenShift user creation") {
             sh("""
                 RANDOM_PASSWORD=\$(openssl rand -base64 20 | cut -d= -f1);
-                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip \
-                    "cd /usr/share/ansible/openshift-deployment-ansible/tools/ ; ./create-user.sh testUser \$RANDOM_PASSWORD"
-                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip \
-                    "oc login https://ocp.\$Domainsuffix:8443 --insecure-skip-tls-verify=true -u testUser -p \$RANDOM_PASSWORD"
+                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "cd /usr/share/ansible/openshift-deployment-ansible/tools/ ; ./create-user.sh testUser \$RANDOM_PASSWORD"
+                ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$Bastionip "oc login https://ocp.\$Domainsuffix:8443 --insecure-skip-tls-verify=true -u testUser -p \$RANDOM_PASSWORD"
             """)
         }
     }
