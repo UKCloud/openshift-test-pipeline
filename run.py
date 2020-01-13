@@ -2,9 +2,8 @@ try:
     from requests import post
     from base64 import b64decode
     from yaml import safe_load, safe_dump
-    from kubernetes import client, config
-    from openshift.dynamic import DynamicClient
     from subprocess import call
+    from uuid import uuid4
     import fire
 
     # Imports for error handling.
@@ -12,32 +11,6 @@ try:
     import binascii
 except ImportError as err:
     raise ImportError(f"Failed to import required modules: {err}")
-
-
-def create_project(dyn_client: DynamicClient, project: str):
-    """
-    Use the Kubernetes DynamicClient to create a new project in OpenShift.
-    :param dyn_client: The kubernetes DynamicClient class. Used for authentication.
-    :param project: The name of the project to create in OpenShift.
-    """
-    # Get the resource.
-    v1_projects = dyn_client.resources.get(
-        api_version="project.openshift.io/v1", kind="Project"
-    )
-    project_yaml = f"""
-    apiVersion: project.openshift.io/v1
-    kind: Project
-    metadata:
-      name: {project}
-    spec:
-      finalizers:
-      - kubernetes
-    """
-    # Load project YAML.
-    project_yaml = safe_load(project_yaml)
-    # Create the new project.
-    project = v1_projects.create(body=project_yaml)
-    print(f"OpenShift project: {project} created successfully.")
 
 
 def setup_pipeline(
@@ -57,15 +30,48 @@ def setup_pipeline(
     :param pipeline_context_dir: The directory containing pipeline files.
     :param project: The project name to create in OpenShift.
     """
-    # Create a new Kubernetes client from configuration and client to interact with API.
-    k8s_client = config.new_client_from_config()
-    dyn_client = DynamicClient(k8s_client)
-
     # Create OpenShift project.
-    create_project(dyn_client=dyn_client, project=project)
-
+    call(["oc", "new-project", project])
     # Create persistent Jenkins in OpenShift.
-    call(["oc", "create", "jenkins-persistent", "-p", "VOLUME_CAPACITY=50Gi"])
+    call(["oc", "new-app", "jenkins-persistent", "-p", "VOLUME_CAPACITY=50Gi"])
+    # Deploy Jenkins slave pipeline.
+    # Using Subprocess for the following commands as OpenShift Python rest client doesn't support templating.
+    call(
+        [
+            "oc",
+            "new-app",
+            "-f",
+            "jenkins-pipelines/openshift-test-slave.yaml",
+            "-p",
+            f"NAME={name}",
+            "-p",
+            f"SOURCE_REPOSITORY_URL={source_repository_url}",
+            "-p",
+            f"SOURCE_REPOSITORY_REF={source_repository_ref}",
+            "-p",
+            f"CONTEXT_DIR={context_dir}",
+            "-p",
+            f"PIPELINE_CONTEXT_DIR={pipeline_context_dir}",
+        ]
+    )
+    # Generate random UUID for generic webhook secret.
+    secret = uuid4()
+    # Deploy buildconfig for test pipeline. Creates generic webhook.
+    call(
+        [
+            "oc",
+            "new-app",
+            "-f",
+            "jenkins-pipelines/test-pipeline.yaml",
+            "-p",
+            f"SECRET={secret}",
+        ]
+    )
+    # Once created, describe object telling the user how to kick off a pipeline.
+    call(["oc", "describe", "bc/openshift-test-pipeline"])
+    print(
+        "Use the generic webhook URL to begin the test-pipeline. This will require you to make a HTTP POST request manually.\nIt is recommended to use the run_pipeline command."
+    )
 
 
 def load_credentials(credentials_path: str):
@@ -98,13 +104,16 @@ def run_pipeline(
     :param secret: The secret to provide in the webhook url.
     """
     # Check that both webhook_url and secret are not None.
-    if not all(webhook_url, secret):
+    REQUIRED_PARAMS = (webhook_url, secret)
+    if not all(REQUIRED_PARAMS):
         raise ValueError("Required parameters webhook_url and secret were not defined.")
     # Load credentials file in yaml format.
     credentials = load_credentials(credentials_path)
     for num, env_var in enumerate(credentials["env"]):
         name = env_var["name"]
         value = env_var["value"]
+        # Base64 decode all values apart from Sshkey.
+        # Sshkey isn't decoded to preserve formatting.
         if name != "Sshkey":
             try:
                 # Decode base64 encoded string.
@@ -129,9 +138,10 @@ def run_pipeline(
         # Raise HTTPError.
         resp.raise_for_status()
     else:
-        print(resp.json())
+        print(resp.content)
 
 
 if __name__ == "__main__":
+    __version__ = "0.0.1"
     fire.Fire({"run_pipeline": run_pipeline, "setup_pipeline": setup_pipeline})
 
