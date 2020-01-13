@@ -20,7 +20,7 @@ A pipeline for running tests against an OpenShift cluster.
 
 ## Usage
 
-1. Fill out the [`credentials.yaml`](credentials.yaml) file with the required data for the test-pipeline.
+1. Fill out the [`credentials.yaml`](credentials.yaml) file with the required fields **in base64 format** for the test-pipeline.
 
     * This file is used to pass environment variables to Jenkins in order to run test on the OpenShift cluster.
 
