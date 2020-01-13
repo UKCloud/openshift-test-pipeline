@@ -13,7 +13,7 @@ objects:
   spec:
     source:
       git:
-        ref: "dev"
+        ref: ${SOURCE_REPOSITORY_REF}
         uri: "https://github.com/UKCloud/openshift-test-pipeline"
     strategy:
       jenkinsPipelineStrategy:
@@ -45,3 +45,8 @@ parameters:
   displayName: Secret
   name: SECRET
   required: true
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+  value: master
