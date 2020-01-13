@@ -22,7 +22,7 @@ A pipeline for running tests against an OpenShift cluster.
 
 1. Fill out the [`credentials.yaml`](credentials.yaml) file with the required fields **in base64 format** for the test-pipeline.
 
-    * This file is used to pass environment variables to Jenkins in order to run test on the OpenShift cluster.
+    * This file is used to pass environment variables to Jenkins in order to run tests on the OpenShift cluster.
 
 2. Use [run.py](run.py) to setup the pipeline using the following command:
 
