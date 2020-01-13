@@ -1,28 +1,41 @@
 # openshift-test-pipeline
+
 A pipeline for running tests against an OpenShift cluster.
 
 ## What is deployed?
 
-* A [persistent Jenkins](setup-pipeline.sh) given a volume capacity of 50Gi.
+* A persistent Jenkins instance with a volume capacity of 50Gi.
 
 * A [pipeline](jenkins-pipelines/openshift-test-slave.yaml) to [build, test and push](jenkins-pipelines/Jenkinsfile) a [custom Jenkins slave](docker/dockerfile) based off of the image **jenkins-slave-base-rhel7:latest**.
-
-* An [OpenShift secret](jenkins-pipelines/secret.yaml), used to pass to the Jenkins test pipeline via a generic webhook.
 
 * An [OpenShift test pipeline](jenkins-pipelines/test-pipeline.yaml) which uses a [Jenkinsfile](Jenkinsfile) to run tests against an OpenShift cluster.
 
 ## Prerequisites
 
-* Ensure the host you are running `setup-pipeline.sh` and `run-pipeline.sh` are logged in to a OpenShift cluster with appropriate permissions.
+* The [OKD/OC CLI](https://www.okd.io/download.html) and be logged into an OpenShift cluster with appropriate permissions
+
+* Python 3.7
+
+* Install the requirements for the Python CLI using the following command: `pip install -r requirements.txt`
 
 ## Usage
 
-1. Run the setup script using the following command: `chmod +x setup-pipeline.sh && setup-pipeline.sh`
+1. Fill out the [`credentials.yaml`](credentials.yaml) file with the required data for the test-pipeline.
 
-2. Wait for the **openshift-test-pipeline-slave-pipeline** to finish building the slave image.
+    * This file is used to pass environment variables to Jenkins in order to run test on the OpenShift cluster.
 
-3. Provide the required secrets in `jenkins-pipelines/secret.yaml`:
+2. Use [run.py](run.py) to setup the pipeline using the following command:
 
-    * Create the secret in the project using the following command: `oc create -f jenkins-pipelines/secret.yaml`
+    ```bash
+    # Use setup_pipeline first.
+    # You can also supply no parameters to use all the defaults.
+    python run.py setup_pipeline [name] [source_repository_url] [source_repository_ref] [context_dir] [pipeline_context_dir] [project]
+    ```
 
-4. Run the test pipeline using the following command: `chmod +x run-pipeline.sh && run-pipeline.sh`
+3. Use [run.py](run.py) to run the pipeline using the following command:
+
+    ```bash
+    python run.py run_pipeline [credentials_path] [webhook_url] [secret]
+    # Example:
+    python run.py run_pipeline credentials.yaml https://ocp.somedomain.com:8443/apis/build.openshift.io/v1/namespaces/test-pipeline/buildconfigs/openshift-test-pipeline/webhooks/<secret>/generic b1c65552-c8e2-4620-b2fd-8ba84f3e8dd2
+    ```
