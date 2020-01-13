@@ -65,6 +65,8 @@ def setup_pipeline(
             "jenkins-pipelines/test-pipeline.yaml",
             "-p",
             f"SECRET={secret}",
+            "-p",
+            f"SOURCE_REPOSITORY_REF={source_repository_ref}"
         ]
     )
     # Once created, describe object telling the user how to kick off a pipeline.
