@@ -29,6 +29,7 @@ A pipeline for running tests against an OpenShift cluster.
     ```bash
     # Use setup_pipeline first.
     # You can also supply no parameters to use all the defaults.
+    # To specify specific parameters. Prefix with --<parametername>=<parametervalue>
     python run.py setup_pipeline [name] [source_repository_url] [source_repository_ref] [context_dir] [pipeline_context_dir] [project]
     ```
 
