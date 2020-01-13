@@ -114,7 +114,7 @@ def run_pipeline(
         value = env_var["value"]
         # Base64 decode all values apart from Sshkey.
         # Sshkey isn't decoded to preserve formatting.
-        if name != "Sshkey":
+        if name != "SSHKEY":
             try:
                 # Decode base64 encoded string.
                 decoded_string = b64decode(value).decode("utf-8")
