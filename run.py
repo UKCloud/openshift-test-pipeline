@@ -112,7 +112,7 @@ def run_pipeline(
     for num, env_var in enumerate(credentials["env"]):
         name = env_var["name"]
         value = env_var["value"]
-        # Base64 decode all values apart from Sshkey.
+        # Base64 decode all values apart from SSHKEY.
         # Sshkey isn't decoded to preserve formatting.
         if name != "SSHKEY":
             try:
