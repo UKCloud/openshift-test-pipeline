@@ -41,7 +41,7 @@ def setup_pipeline(
             "-p",
             "VOLUME_CAPACITY=50Gi",
             "-e",
-            "INSTALL_PLUGINS=Slack Notification:2.35,Global Slack Notifier:1.5",
+            "INSTALL_PLUGINS=slack:2.35,global-slack-notifier:1.5",
         ]
     )
     # Deploy Jenkins slave pipeline.
