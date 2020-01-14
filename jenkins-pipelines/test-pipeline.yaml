@@ -13,26 +13,26 @@ objects:
   spec:
     source:
       git:
-        ref: "dev"
+        ref: ${SOURCE_REPOSITORY_REF}
         uri: "https://github.com/UKCloud/openshift-test-pipeline"
     strategy:
       jenkinsPipelineStrategy:
         env:
-        - name: "Username"
+        - name: "USERNAME"
           value: ""
-        - name: "Userpass"
+        - name: "USERPASS"
           value: ""
-        - name: "Adminuser"
+        - name: "ADMINUSER"
           value: ""
-        - name: "Adminpass"
+        - name: "ADMINPASS"
           value: ""
-        - name: "Bastionip"
+        - name: "BASTIONIP"
           value: ""
-        - name: "Domainsuffix"
+        - name: "DOMAINSUFFIX"
           value: ""
-        - name: "Multinetwork"
+        - name: "MULTINETWORK"
           value: ""
-        - name: "Sshkey"
+        - name: "SSHKEY"
           value: ""
         jenkinsfilePath: "Jenkinsfile"
     triggers:
@@ -45,3 +45,8 @@ parameters:
   displayName: Secret
   name: SECRET
   required: true
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+  value: master
