@@ -32,8 +32,18 @@ def setup_pipeline(
     """
     # Create OpenShift project.
     call(["oc", "new-project", project])
-    # Create persistent Jenkins in OpenShift.
-    call(["oc", "new-app", "jenkins-persistent", "-p", "VOLUME_CAPACITY=50Gi"])
+    # Create persistent Jenkins in OpenShift with Slack plugins.
+    call(
+        [
+            "oc",
+            "new-app",
+            "jenkins-persistent",
+            "-p",
+            "VOLUME_CAPACITY=50Gi",
+            "-e",
+            "INSTALL_PLUGINS=Slack Notification:2.35,Global Slack Notifier:1.5",
+        ]
+    )
     # Deploy Jenkins slave pipeline.
     # Using Subprocess for the following commands as OpenShift Python rest client doesn't support templating.
     call(
@@ -66,7 +76,7 @@ def setup_pipeline(
             "-p",
             f"SECRET={secret}",
             "-p",
-            f"SOURCE_REPOSITORY_REF={source_repository_ref}"
+            f"SOURCE_REPOSITORY_REF={source_repository_ref}",
         ]
     )
     # Once created, describe object telling the user how to kick off a pipeline.
