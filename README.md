@@ -40,3 +40,35 @@ A pipeline for running tests against an OpenShift cluster.
     # Example:
     python run.py run_pipeline credentials.yaml https://ocp.somedomain.com:8443/apis/build.openshift.io/v1/namespaces/test-pipeline/buildconfigs/openshift-test-pipeline/webhooks/<secret>/generic b1c65552-c8e2-4620-b2fd-8ba84f3e8dd2
     ```
+
+### Slack Notifications
+
+1. Login to Jenkins via the route exposed by OpenShift
+
+2. On the left menu, click **Manage Jenkins**
+
+3. Scroll down and click **Configure System**
+
+4. Scroll down to the heading **Slack**
+
+5. Set the **workspace** field to the desired Slack workspace
+
+6. Click **Add** next to the **credential** field
+
+7. Click **Jenkins**
+
+8. Click the **Kind** dropdown menu, and click **Secret text**
+
+9. Supply the Slack token in the **secret** field
+
+10. Provide the ID `slack-token`
+
+11. Click **Add**
+
+12. Select the `slack-token` from the **Credential** dropdown menu
+
+13. Set the **Default channel / member id** to the channel you wish to send notifications to
+
+14. To see if notifications are working, click **Test Connection**
+
+15. Once you have verified everything if working, click **Save**
