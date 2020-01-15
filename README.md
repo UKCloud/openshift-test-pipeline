@@ -71,4 +71,4 @@ A pipeline for running tests against an OpenShift cluster.
 
 14. To see if notifications are working, click **Test Connection**
 
-15. Once you have verified everything if working, click **Save**
+15. Once you have verified everything is working, click **Save**
