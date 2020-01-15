@@ -16,7 +16,7 @@ except ImportError as err:
 def setup_pipeline(
     name: str = "openshift-test-pipeline-slave",
     source_repository_url: str = "https://github.com/UKCloud/openshift-test-pipeline.git",
-    source_repository_ref: str = "dev",
+    source_repository_ref: str = "master",
     context_dir: str = "docker",
     pipeline_context_dir: str = "jenkins-pipelines",
     project: str = "test-pipeline",
