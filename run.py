@@ -70,6 +70,8 @@ def setup_pipeline(
             f"CONTEXT_DIR={context_dir}",
             "-p",
             f"PIPELINE_CONTEXT_DIR={pipeline_context_dir}",
+            "-p",
+            f"DESTINATIONNAMESPACE={project}"
         ]
     )
     # Generate random UUID for generic webhook secret.
