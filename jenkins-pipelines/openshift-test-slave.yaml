@@ -75,6 +75,9 @@ objects:
     strategy:
       jenkinsPipelineStrategy:
         jenkinsfilePath: Jenkinsfile
+        env:
+          - name: DESTINATIONNAMESPACE
+            value: ${DESTINATIONNAMESPACE}
       type: JenkinsPipeline
     triggers:
     - type: ImageChange
@@ -109,3 +112,7 @@ parameters:
   displayName: Pipeline Context Directory
   name: PIPELINE_CONTEXT_DIR
   value: jenkins-pipelines
+- description: This is passed via the setup_pipeline command to set the namespace for the openshift-test-pipeline slave build
+  displayName: Destination Namespace
+  name: DESTINATIONNAMESPACE
+  value: test-pipeline
