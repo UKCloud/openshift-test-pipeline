@@ -2,13 +2,14 @@ try:
     from requests import post
     from base64 import b64decode
     from yaml import safe_load, safe_dump
-    from subprocess import call
+    from subprocess import call, check_output
     from uuid import uuid4
     import fire
 
     # Imports for error handling.
     from yaml.parser import ParserError
     import binascii
+    from subprocess import CalledProcessError
 except ImportError as err:
     raise ImportError(f"Failed to import required modules: {err}")
 
@@ -31,7 +32,14 @@ def setup_pipeline(
     :param project: The project name to create in OpenShift.
     """
     # Create OpenShift project.
-    call(["oc", "new-project", project])
+    try:
+        # Using check output here as it doesn't respect the exit 1 status code.
+        # So the script doesn't end as it should. Instead, raises CalledprocessError.
+        check_output(["oc", "new-project", project])
+    except CalledProcessError:
+        # This error occurs when the project already exists.
+        print(f"Project already exists, switching to project: {project}")
+        call(["oc", "project", project])
     # Create persistent Jenkins in OpenShift with Slack plugins.
     call(
         [
