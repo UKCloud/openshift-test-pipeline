@@ -16,6 +16,8 @@ node ("openshift-test-pipeline-slave") {
 node {
 
     stage("promote") {
-        openshiftTag(sourceStream: "openshift-test-pipeline-slave", sourceTag: "latest", destinationNamespace: "${env.DESTINATIONNAMESPACE}", destinationStream: "openshift-test-pipeline-slave", destinationTag: "latest")
+        echo ""
+        def destinationNamespace = ${DESTINATIONNAMESPACE}
+        openshiftTag(sourceStream: "openshift-test-pipeline-slave", sourceTag: "latest", destinationNamespace: ${destinationNamespace}, destinationStream: "openshift-test-pipeline-slave", destinationTag: "latest")
     }
 }
