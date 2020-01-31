@@ -2,7 +2,7 @@ node ("openshift-test-pipeline-slave") {
 
     try {
 
-        slackSend color: "good", message: "openshift-test-pipeline started: Job name: ${env.JOB_NAME} Build number: ${env.BUILD_NUMBER} - <${env.BUILD_URL}|Jenkins build URL>"
+        slackSend color: "good", message: "openshift-test-pipeline started :deployparrot: : Job name: ${env.JOB_NAME} Build number: ${env.BUILD_NUMBER} - <${env.BUILD_URL}|Jenkins build URL>"
 
         stage("Create SSH key") {
             sh("""
@@ -53,7 +53,7 @@ node ("openshift-test-pipeline-slave") {
         }
     }
     catch (e) {
-        slackSend color: "#c2001f", message: "openshift-test-pipeline failed :sad_parrot: Job name: ${env.JOB_NAME} Build number: ${env.BUILD_NUMBER} - <${env.BUILD_URL}|Jenkins build URL>"
+        slackSend color: "#c2001f", message: "openshift-test-pipeline failed :sad_parrot: :jenkinstriggered: Job name: ${env.JOB_NAME} Build number: ${env.BUILD_NUMBER} - <${env.BUILD_URL}|Jenkins build URL>"
         throw e
     }
     finally {
