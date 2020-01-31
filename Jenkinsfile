@@ -25,7 +25,7 @@ node ("openshift-test-pipeline-slave") {
         /*
             Load tests for cluster using Locust.
         */
-        stage('OpenShift load testing') {
+        stage("OpenShift load testing") {
             sh("""
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$BASTIONIP \
                     "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /home/cloud-user/openshift-tooling/locust/locust_setup.yaml --extra-vars domainSuffix=\"\$DOMAINSUFFIX\""
