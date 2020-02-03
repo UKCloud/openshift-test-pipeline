@@ -1,0 +1,52 @@
+apiVersion: "v1"
+kind: "Template"
+metadata:
+  creationTimestamp: null
+  name: "openshift-test-pipeline-template"
+objects:
+- apiVersion: "build.openshift.io/v1"
+  kind: "BuildConfig"
+  metadata:
+    name: "openshift-test-pipeline"
+    labels:
+      app: "openshift-test-pipeline"
+  spec:
+    source:
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: "https://github.com/UKCloud/openshift-test-pipeline"
+    strategy:
+      jenkinsPipelineStrategy:
+        env:
+        - name: "USERNAME"
+          value: ""
+        - name: "USERPASS"
+          value: ""
+        - name: "ADMINUSER"
+          value: ""
+        - name: "ADMINPASS"
+          value: ""
+        - name: "BASTIONIP"
+          value: ""
+        - name: "DOMAINSUFFIX"
+          value: ""
+        - name: "MULTINETWORK"
+          value: ""
+        - name: "SSHKEY"
+          value: ""
+        jenkinsfilePath: "Jenkinsfile"
+    triggers:
+      - generic:
+          allowEnv: true
+          secret: ${SECRET}
+        type: "Generic"
+parameters:
+- description: The base64 value used for the generic webhook secret.
+  displayName: Secret
+  name: SECRET
+  required: true
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+  value: master

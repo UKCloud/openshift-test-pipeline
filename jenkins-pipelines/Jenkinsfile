@@ -1,0 +1,21 @@
+node {
+
+    stage("build") {
+        openshiftBuild(buildConfig: "openshift-test-pipeline-slave", showBuildLogs: "true")
+    }
+}
+
+node ("openshift-test-pipeline-slave") {
+
+    stage("test tools") {
+        sh("ansible-playbook --version")
+        sh("oc version")
+    }
+}
+
+node {
+
+    stage("promote") {
+        openshiftTag(sourceStream: "openshift-test-pipeline-slave", sourceTag: "latest", destinationNamespace: "${DESTINATIONNAMESPACE}", destinationStream: "openshift-test-pipeline-slave", destinationTag: "latest")
+    }
+}
