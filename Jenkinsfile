@@ -28,7 +28,7 @@ node ("openshift-test-pipeline-slave") {
         stage("OpenShift load testing") {
             sh("""
                 ssh -o StrictHostKeyChecking=no -i ssh_key cloud-user@\$BASTIONIP \
-                    "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /home/cloud-user/openshift-tooling/locust/locust_setup.yaml --extra-vars domainSuffix=\"\$DOMAINSUFFIX\""
+                    "ansible-playbook -i /usr/share/ansible/openshift-deployment-ansible/openshift-ansible-hosts /home/cloud-user/openshift-tooling/locust/locust_setup.yml -e "@/home/cloud-user/openshift-tooling/locust/vars.yml" -e domainSuffix=\"\$DOMAINSUFFIX\""
             """)
         }
 
